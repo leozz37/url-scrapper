@@ -2,8 +2,8 @@
 
 Python Script for searching Google images url
 
-Instalation
-===========
+Installation
+============
 Make sure you have [Python 3](https://www.python.org/) installed.
 
 Clone this repository to your machine
@@ -32,7 +32,10 @@ This code requires two flags:
     
     -d, --download: Download the images
 
-**Run example:** "python3 main.py -t "Ricardo Milos" -s 100 -d
+**Run example:** 
+```bash
+python3 main.py -t "Ricardo Milos" -s 100 -d
+```
 
 Side Note
 =========
