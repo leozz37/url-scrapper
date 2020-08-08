@@ -8,17 +8,17 @@ Make sure you have [Python 3](https://www.python.org/) installed.
 
 Clone this repository to your machine
 ```bash
-git clone https://github.com/leozz37/image-url-search.git
+$ git clone https://github.com/leozz37/image-url-search.git
 ```
 
 Go to the repository directory
 ```bash
-cd image-url-search
+$ cd image-url-search
 ```
 
 Install the dependencies
 ```bash
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 Running
@@ -34,7 +34,7 @@ This code requires two flags:
 
 **Run example:** 
 ```bash
-python3 main.py -t "Ricardo Milos" -s 100 -d
+$ python main.py -t "Ricardo Milos" -s 100 -d
 ```
 
 Side Note
