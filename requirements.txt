@@ -1,3 +1,2 @@
-google-images-download==2.8.0
-selenium==3.141.0
-urllib3==1.25.7
+beautifulsoup4~=4.9.3
+pytest~=6.1.2
