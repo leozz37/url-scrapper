@@ -2,47 +2,73 @@
 #
 #   This is a tool for getting image URLs from the internet
 #
-import argparse
+import errno
 import re
+import os
+import sys
 
 from urllib.request import urlopen
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, ResultSet
 
-
-# html = urlopen('https://en.wikipedia.org/wiki/Peter_Jeffrey_(RAAF_officer)')
-# bs = BeautifulSoup(html, 'html.parser')
-# images = bs.find_all('img', {'scrapper':re.compile('.jpg')})
-# for image in images:
-#     print(image['scrapper']+'\n')
 
 class Scrapper:
     def create_url(self, keyword: str) -> str:
         """
-        Remove the spaces on the keyword and returns a Google Image URL
+        Remove the spaces on the keyword and returns a Wikipedia URL
 
         :param: keyword: Keyword to be searched
-        :return: Google Image's URL with Keyword
+        :return: Wikipedia URL with Keyword formatted
         :type: str
         """
-        formatted_keyword = keyword.replace(" ", "%20")
-        url = "https://www.google.com/search?tbm=isch&q=" + formatted_keyword
-        return url
+        formatted_keyword = keyword.replace(" ", "_")
+        return "https://en.wikipedia.org/wiki/" + formatted_keyword
+
+    def get_urls(self, search_url: str) -> ResultSet:
+        """
+        Scrap the Wikipedia page and get the images URL
+
+        :param: search_url: Wikipedia URL
+        :return: set of images URL
+        :type: ResultSet (bs)
+        """
+        html = urlopen(search_url)
+        bs = BeautifulSoup(html, 'html.parser')
+        images_url = bs.find_all('img', {'src': re.compile('.jpg')})
+        return images_url
+
+    def save_urls_to_file(self, images_url: ResultSet) -> bool:
+        """
+        Save the images URL to a txt file
+
+        :param: Set of images URL
+        :return: True if succeed
+        :type: bool
+        """
+        # Creating directory and file if doesn't exists
+        file_path = "../data/images_urls.txt"
+        if not os.path.exists(os.path.dirname(file_path)):
+            try:
+                os.makedirs(os.path.dirname(file_path))
+            except OSError as exc:
+                if exc.errno != errno.EEXIST:
+                    raise
+
+        # Saving content to txt file
+        with open(file_path, "w") as f:
+            for image in images_url:
+                f.write("https:" + image['src'] + '\r\n')
+
+        return True
 
 
 if __name__ == '__main__':
     """
     Main program entrypoint
     """
-    # Command line parser
-    arg_parser = argparse.ArgumentParser()
+    keyword = sys.argv[1]
 
-    arg_parser.add_argument("-l", "--limit", dest="limit", action="store",
-                            required=True, default="1",
-                            help="The quantity of URL to get")
-
-    arg_parser.add_argument("-k", "--keyword", dest="keyword", action="store", required=True,
-                            help="The keyword to be searched")
-
-    args = arg_parser.parse_args()
-
-    print(Scrapper().create_url(args.keyword))
+    scrapper = Scrapper()
+    url = scrapper.create_url(keyword)
+    images_url = scrapper.get_urls(url)
+    scrapper.save_urls_to_file(images_url)
+    print(f'{len(images_url)} images found!')
