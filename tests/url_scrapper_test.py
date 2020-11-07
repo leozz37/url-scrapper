@@ -64,3 +64,23 @@ def test_get_urls_zero_images_with_success(scrapper: Scrapper) -> None:
 
     # This value may vary in the future
     assert len(images_url) == 0
+
+
+def test_save_urls_to_file_with_success(scrapper: Scrapper) -> None:
+    """
+    Test if file is being generating with success
+    """
+    url = "https://en.wikipedia.org/wiki/Coleophora_ibipennella"
+    images_url = scrapper.get_urls(url)
+
+    # This url may change in the future
+    expected_output = "https://upload.wikimedia.org/wikipedia/" + \
+                      "commons/thumb/f/fd/Coleophoridae-01_%28xndr%29" + \
+                      ".jpg/40px-Coleophoridae-01_%28xndr%29.jpg\n"
+    scrapper.save_urls_to_file(images_url)
+
+    file_path = "../data/images_urls.txt"
+    with open(file_path) as f:
+        resulted_output = f.read()
+
+    assert expected_output == resulted_output
