@@ -14,4 +14,6 @@ If your search has spaces, use " " around your keyword.
 
 ### Observations
 
-This project has no real meaning, only for study purposes.
+This project has no real purposes, only for study.
+
+This project is being part of [Jetbrains TeamCity Cloud](https://www.jetbrains.com/teamcity/cloud/) beta UX study. 
